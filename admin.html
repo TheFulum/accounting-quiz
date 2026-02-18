@@ -145,6 +145,7 @@
       border: 1px solid var(--warning); padding: 3px 10px;
       border-radius: var(--radius-pill);
     }
+    .q-opt-del:hover { background: var(--danger-bg) !important; border-color: var(--danger) !important; }
     @media (max-width: 576px) {
       .admin-q-header { flex-wrap: wrap; }
       .q-preview { display: none; }
@@ -340,10 +341,10 @@
             Правильный тип изменений балансового уравнения *
           </label>
           <div class="change-pills-row" id="newChangeTypePills">
-            <button type="button" class="change-pill new-changetype-btn" data-type="А+П+">А+П+</button>
-            <button type="button" class="change-pill new-changetype-btn" data-type="А-П-">А-П-</button>
-            <button type="button" class="change-pill new-changetype-btn" data-type="А+А-">А+А-</button>
-            <button type="button" class="change-pill new-changetype-btn" data-type="П+П-">П+П-</button>
+            <button type="button" class="change-pill new-changetype-btn" data-type="1">1</button>
+            <button type="button" class="change-pill new-changetype-btn" data-type="2">2</button>
+            <button type="button" class="change-pill new-changetype-btn" data-type="3">3</button>
+            <button type="button" class="change-pill new-changetype-btn" data-type="4">4</button>
           </div>
         </div>
 
@@ -357,16 +358,16 @@
           </label>
           <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:6px">
             <label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.84rem;cursor:pointer;user-select:none">
-              <input type="checkbox" name="cto" value="А+П+" checked style="accent-color:var(--accent)"> А+П+
+              <input type="checkbox" name="cto" value="1" checked style="accent-color:var(--accent)"> 1
             </label>
             <label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.84rem;cursor:pointer;user-select:none">
-              <input type="checkbox" name="cto" value="А-П-" checked style="accent-color:var(--accent)"> А-П-
+              <input type="checkbox" name="cto" value="2" checked style="accent-color:var(--accent)"> 2
             </label>
             <label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.84rem;cursor:pointer;user-select:none">
-              <input type="checkbox" name="cto" value="А+А-" checked style="accent-color:var(--accent)"> А+А-
+              <input type="checkbox" name="cto" value="3" checked style="accent-color:var(--accent)"> 3
             </label>
             <label style="display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:0.84rem;cursor:pointer;user-select:none">
-              <input type="checkbox" name="cto" value="П+П-" checked style="accent-color:var(--accent)"> П+П-
+              <input type="checkbox" name="cto" value="4" checked style="accent-color:var(--accent)"> 4
             </label>
           </div>
         </div>

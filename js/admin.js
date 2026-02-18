@@ -162,6 +162,57 @@ function setLoading(state) {
   if (el) el.style.display = state ? 'flex' : 'none';
 }
 
+// ── Привязывает обработчики к одной строке варианта ответа ──
+function bindOptionRowEvents(row, qidx) {
+  // Удаляем старые обработчики через замену клонированием
+  const oldDel  = row.querySelector('.q-opt-del');
+  const oldText = row.querySelector('.q-option-input');
+  const oldRadio = row.querySelector('.q-correct-radio');
+
+  if (oldDel) {
+    const newDel = oldDel.cloneNode(true);
+    oldDel.replaceWith(newDel);
+    newDel.addEventListener('click', () => {
+      const q        = questionsData.questions[qidx];
+      const editorEl = document.getElementById(`opts_${qidx}`);
+      const allRows  = editorEl.querySelectorAll('.option-editor-row');
+      if (allRows.length <= 2) return showToast('Минимум 2 варианта ответа', 'warning');
+
+      const optI     = parseInt(row.dataset.optrow);
+      const wasRight = row.querySelector('.q-correct-radio').checked;
+      q.options.splice(optI, 1);
+      row.remove();
+
+      if (wasRight) q.correct = 0;
+      else if (q.correct > optI) q.correct--;
+
+      reindexOptions(editorEl, qidx);
+      editorEl.querySelectorAll('.q-correct-radio').forEach((r, i) => { r.checked = (i === q.correct); });
+      editorEl.querySelectorAll('.option-editor-row').forEach(r => bindOptionRowEvents(r, qidx));
+      markChanged();
+    });
+  }
+
+  if (oldText) {
+    const newText = oldText.cloneNode(true);
+    oldText.replaceWith(newText);
+    newText.addEventListener('input', () => {
+      const optI = parseInt(newText.dataset.optidx);
+      questionsData.questions[qidx].options[optI].label = newText.value;
+      markChanged();
+    });
+  }
+
+  if (oldRadio) {
+    const newRadio = oldRadio.cloneNode(true);
+    oldRadio.replaceWith(newRadio);
+    newRadio.addEventListener('change', () => {
+      questionsData.questions[qidx].correct = parseInt(newRadio.value);
+      markChanged();
+    });
+  }
+}
+
 // ── РЕНДЕР СПИСКА ──
 function renderList() {
   const container = document.getElementById('questionsList');
@@ -197,13 +248,10 @@ function renderList() {
     });
   });
 
-  container.querySelectorAll('.q-correct-radio').forEach(radio => {
-    radio.addEventListener('change', () => {
-      const idx    = parseInt(radio.dataset.qidx);
-      const optIdx = parseInt(radio.value);
-      questionsData.questions[idx].correct = optIdx;
-      markChanged();
-    });
+  // Обработчики вариантов ответа (текст, радио, удаление) — через bindOptionRowEvents
+  container.querySelectorAll('.option-editor-row').forEach(row => {
+    const qidx = parseInt(row.querySelector('[data-qidx]')?.dataset.qidx ?? -1);
+    if (qidx >= 0) bindOptionRowEvents(row, qidx);
   });
 
   container.querySelectorAll('.q-changetype-btn').forEach(btn => {
@@ -231,10 +279,104 @@ function renderList() {
       markChanged();
     });
   });
+
+  // ── ДОБАВИТЬ ВАРИАНТ ответа ──
+  container.querySelectorAll('.q-opt-add').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qidx    = parseInt(btn.dataset.qidx);
+      const q       = questionsData.questions[qidx];
+      const newOi   = q.options.length;
+      q.options.push({ label: '' });
+
+      const editorEl = document.getElementById(`opts_${qidx}`);
+      editorEl.insertAdjacentHTML('beforeend', renderOptionRow({ label: '' }, newOi, qidx));
+
+      // Вешаем обработчики на новую строку
+      const newRow = editorEl.lastElementChild;
+      bindOptionRowEvents(newRow, qidx);
+      markChanged();
+    });
+  });
+
+  // ── УДАЛИТЬ ВАРИАНТ ответа ──
+  container.querySelectorAll('.q-opt-del').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qidx  = parseInt(btn.dataset.qidx);
+      const q     = questionsData.questions[qidx];
+      const editorEl = document.getElementById(`opts_${qidx}`);
+      const allRows  = editorEl.querySelectorAll('.option-editor-row');
+
+      if (allRows.length <= 2) {
+        return showToast('Минимум 2 варианта ответа', 'warning');
+      }
+
+      const rowEl    = btn.closest('.option-editor-row');
+      const optI     = parseInt(rowEl.dataset.optrow);
+      const wasRight = rowEl.querySelector('.q-correct-radio').checked;
+
+      // Удаляем из данных и из DOM
+      q.options.splice(optI, 1);
+      rowEl.remove();
+
+      // Пересчитываем правильный ответ если нужно
+      if (wasRight) {
+        q.correct = 0;
+      } else if (q.correct > optI) {
+        q.correct--;
+      }
+
+      // Переиндексируем DOM и данные
+      reindexOptions(editorEl, qidx);
+      // Обновляем состояние радиокнопок
+      editorEl.querySelectorAll('.q-correct-radio').forEach((r, i) => {
+        r.checked = (i === q.correct);
+      });
+
+      // Перевешиваем обработчики на все строки
+      editorEl.querySelectorAll('.option-editor-row').forEach(row => {
+        bindOptionRowEvents(row, qidx);
+      });
+
+      markChanged();
+    });
+  });
+}
+
+function renderOptionRow(opt, oi, origIdx) {
+  return `
+    <div class="option-editor-row" data-optrow="${oi}">
+      <input type="radio" class="q-correct-radio" name="correct_${origIdx}" value="${oi}"
+        data-qidx="${origIdx}" ${questionsData.questions[origIdx].correct === oi ? 'checked' : ''}
+        title="Правильный ответ">
+      <input type="text" class="q-input q-option-input" data-field="option"
+        data-optidx="${oi}" data-qidx="${origIdx}" value="${opt.label.replace(/"/g, '&quot;')}">
+      <button type="button" class="q-opt-del" data-qidx="${origIdx}" data-optrow="${oi}"
+        title="Удалить вариант"
+        style="background:none;border:1px solid transparent;border-radius:var(--radius);
+               cursor:pointer;color:var(--danger);padding:4px 8px;flex-shrink:0;
+               font-size:0.95rem;line-height:1;transition:all var(--transition)"
+        onmouseover="this.style.background='var(--danger-bg)';this.style.borderColor='var(--danger)'"
+        onmouseout="this.style.background='none';this.style.borderColor='transparent'">✕</button>
+    </div>`;
+}
+
+function reindexOptions(editorEl, origIdx) {
+  editorEl.querySelectorAll('.option-editor-row').forEach((row, i) => {
+    row.dataset.optrow = i;
+    const radio = row.querySelector('.q-correct-radio');
+    const input = row.querySelector('.q-option-input');
+    const delbtn = row.querySelector('.q-opt-del');
+    radio.value = i;
+    radio.dataset.qidx = origIdx;
+    input.dataset.optidx = i;
+    input.dataset.qidx = origIdx;
+    delbtn.dataset.qidx = origIdx;
+    delbtn.dataset.optrow = i;
+  });
 }
 
 function renderQuestionItem(item, origIdx) {
-  const changeTypeOptions = item.changeTypeOptions || ['А+П+', 'А-П-', 'А+А-', 'П+П-'];
+  const changeTypeOptions = item.changeTypeOptions || ['1', '2', '3', '4'];
   return `
   <div class="admin-q-card" data-id="${origIdx}">
     <div class="admin-q-header">
@@ -261,15 +403,17 @@ function renderQuestionItem(item, origIdx) {
         <input type="text" class="q-input" data-field="topic" data-qidx="${origIdx}" value="${item.topic || ''}">
       </div>
       <div class="q-field-row">
-        <label class="q-field-label">Варианты ответа <span style="color:var(--text-subtle);font-weight:400">(отметьте правильный)</span></label>
-        <div class="options-editor">
-          ${item.options.map((opt, oi) => `
-            <div class="option-editor-row">
-              <input type="radio" class="q-correct-radio" name="correct_${origIdx}" value="${oi}" data-qidx="${origIdx}" ${item.correct === oi ? 'checked' : ''} title="Правильный ответ">
-              <input type="text" class="q-input q-option-input" data-field="option" data-optidx="${oi}" data-qidx="${origIdx}" value="${opt.label}">
-            </div>
-          `).join('')}
+        <label class="q-field-label">
+          Варианты ответа
+          <span style="color:var(--text-subtle);font-weight:400;text-transform:none;letter-spacing:0">— радиокнопка = правильный ответ</span>
+        </label>
+        <div class="options-editor" id="opts_${origIdx}">
+          ${item.options.map((opt, oi) => renderOptionRow(opt, oi, origIdx)).join('')}
         </div>
+        <button type="button" class="q-opt-add nav-btn" data-qidx="${origIdx}"
+          style="margin-top:8px;font-size:0.78rem">
+          + Добавить вариант
+        </button>
       </div>
       <div class="q-field-row">
         <label class="q-field-label">Тип изменений (правильный)</label>
