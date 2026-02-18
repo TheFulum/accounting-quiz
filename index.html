@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест по бухгалтерскому учёту</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Применяем тему до отрисовки страницы
+    (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+  </script>
+</head>
+<body>
+
+<!-- ════════ NAVBAR ════════ -->
+<nav class="site-navbar navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon">БУ</span>
+      Бухгалтерский учёт
+    </a>
+    <div class="d-flex align-items-center gap-2 ms-auto">
+      <button class="theme-toggle" id="themeToggle" title="Переключить тему"></button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Меню">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <div class="navbar-nav ms-lg-3 w-100 d-lg-flex align-items-lg-center gap-lg-2">
+        <!-- Кнопки документов — заглушки (добавить ссылки) -->
+        <div class="nav-item">
+          <a href="#" class="nav-btn" title="Открыть PDF в браузере" target="_blank">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/></svg>
+            Лекции PDF
+          </a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-btn" download title="Скачать DOCX">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/><path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/></svg>
+            Задачи DOCX
+          </a>
+        </div>
+        <div class="nav-item">
+          <button class="nav-btn nav-btn-accent" data-bs-toggle="modal" data-bs-target="#planModal">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14z"/></svg>
+            План счётов
+          </button>
+        </div>
+        <div class="nav-item admin-nav-item" style="display:none">
+          <a href="admin.html" class="nav-btn nav-btn-admin">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/><path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/></svg>
+            Админка
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════ МОДАЛЬНОЕ ОКНО — ПЛАН СЧЁТОВ ════════ -->
+<div class="modal fade" id="planModal" tabindex="-1" aria-labelledby="planModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="planModalLabel">
+          Типовой план счетов бухгалтерского учёта РБ
+          <span style="font-size:0.72rem;font-weight:400;color:var(--text-muted);margin-left:8px">Постановление МФ РБ №50 от 29.06.2011</span>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <div class="plan-search">
+          <span class="si">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg>
+          </span>
+          <input type="text" id="planSearch" placeholder="Поиск по номеру или названию счёта…">
+        </div>
+        <div class="plan-table-wrap">
+          <table class="plan-table">
+            <thead>
+              <tr>
+                <th style="width:80px">Счёт</th>
+                <th>Наименование</th>
+                <th>Субсчета</th>
+              </tr>
+            </thead>
+            <tbody id="planTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ HERO ════════ -->
+<div class="hero-section">
+  <div class="hero-blob"></div>
+  <div class="hero-eyebrow">
+    <svg width="10" height="10" fill="currentColor" viewBox="0 0 16 16"><path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/></svg>
+    Бухгалтерский учёт РБ
+  </div>
+  <h1 class="hero-title">Тест по плану счётов</h1>
+  <p class="hero-subtitle">20 уникальных вопросов из разных тем — проводки, счета и типы изменений балансового уравнения</p>
+  <a href="quiz.html" class="btn-start">
+    Начать тест
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+  <div class="hero-stats" id="heroStats">
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="statTotal">—</span>
+      <span class="hero-stat-label">вопросов в базе</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="statAttempts">—</span>
+      <span class="hero-stat-label">попыток</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-num" id="statBest">—</span>
+      <span class="hero-stat-label">лучший результат</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ ИСТОРИЯ ТЕСТОВ ════════ -->
+<div class="container">
+  <section class="history-section">
+    <div class="section-header">
+      <h2 class="section-title">История прохождений</h2>
+      <span class="section-count" id="historyCount"></span>
+    </div>
+    <div id="historyContainer"></div>
+  </section>
+</div>
+
+<!-- ════════ МОДАЛЬНОЕ — ДЕТАЛИ РЕЗУЛЬТАТА ════════ -->
+<div class="modal fade" id="historyDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Детальный результат теста</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body" id="historyDetailBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" data-bs-dismiss="modal">Закрыть</button>
+        <a href="quiz.html" class="btn-primary">Пройти ещё раз</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Модальное окно детального результата -->
+<div class="modal fade" id="historyDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="historyDetailTitle">Детали прохождения</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body" id="historyDetailBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" data-bs-dismiss="modal">Закрыть</button>
+        <a href="quiz.html" class="btn-primary">Пройти ещё раз</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showHistoryDetail(idx) {
+  const history = JSON.parse(localStorage.getItem('quiz_history') || '[]');
+  const h = history[idx];
+  if (!h) return;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m} мин ${String(sec).padStart(2,'0')} сек` : `${s} сек`;
+  }
+  function getClass(p) { return p >= 80 ? 'great' : p >= 50 ? 'ok' : 'bad'; }
+  function getLabel(p) { return p >= 80 ? 'Отличный результат!' : p >= 50 ? 'Неплохо, есть куда расти' : 'Стоит повторить материал'; }
+  function getEmoji(p) { return p >= 80 ? '🎉' : p >= 50 ? '💪' : '📚'; }
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'long', year:'numeric' }) +
+           ' · ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+  }
+
+  const cls = getClass(h.percent);
+  const errors = h.errors || [];
+  const wrongCount = h.total - h.score;
+
+  let errorsHtml = '';
+  if (errors.length > 0) {
+    errorsHtml = `
+      <div class="errors-section">
+        <div class="errors-title">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+          Разбор ошибок <span style="color:var(--text-subtle);font-size:0.85rem;font-weight:400">(${errors.length})</span>
+        </div>
+        ${errors.map(e => `
+          <div class="error-card">
+            <div class="error-question">${e.text}</div>
+            <div class="error-answers">
+              ${!e.optOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Ваш</span>
+                  <span class="error-answer-text">${e.yourOption}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Верно</span>
+                  <span class="error-answer-text">${e.rightOption}</span>
+                </div>` : ''}
+              ${!e.typeOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Тип: ваш</span>
+                  <span class="error-answer-text">${e.yourType}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Тип: верно</span>
+                  <span class="error-answer-text">${e.rightType}</span>
+                </div>` : ''}
+            </div>
+            ${e.explanation ? `<div class="error-explanation">💡 ${e.explanation}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>`;
+  } else if (h.score === h.total) {
+    errorsHtml = `
+      <div style="text-align:center;padding:28px;background:var(--success-bg);border-radius:var(--radius-lg);border:1px solid var(--success)">
+        <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--success)">Все ответы верны!</div>
+        <div style="font-size:0.86rem;color:var(--text-muted);margin-top:4px">Превосходный результат</div>
+      </div>`;
+  } else {
+    errorsHtml = `<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:0.88rem">
+      Детальная информация об ошибках недоступна для этого прохождения.<br>Данные сохраняются начиная с последней версии.
+    </div>`;
+  }
+
+  document.getElementById('historyDetailTitle').textContent = `Прохождение от ${formatDate(h.date)}`;
+  document.getElementById('historyDetailBody').innerHTML = `
+    <div class="results-hero ${cls}" style="margin-bottom:20px">
+      <div style="font-size:2rem;margin-bottom:6px">${getEmoji(h.percent)}</div>
+      <div class="results-score-big">${h.score}<span> / ${h.total}</span></div>
+      <div class="results-percent" style="color:var(--${cls === 'great' ? 'success' : cls === 'ok' ? 'warning' : 'danger'})">${h.percent}%</div>
+      <div class="results-label">${getLabel(h.percent)}</div>
+      <div class="results-meta">
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--success)">${h.score}</span>
+          <span class="results-meta-label">верных</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--danger)">${wrongCount}</span>
+          <span class="results-meta-label">ошибок</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num">${formatTime(h.time)}</span>
+          <span class="results-meta-label">времени</span>
+        </div>
+        ${h.expired ? `<div class="results-meta-item"><span class="results-meta-num" style="color:var(--danger)">⏰</span><span class="results-meta-label">Время вышло</span></div>` : ''}
+      </div>
+    </div>
+    ${errorsHtml}
+  `;
+
+  const modal = new bootstrap.Modal(document.getElementById('historyDetailModal'));
+  modal.show();
+}
+</script>
+<script>
+// Загружаем кол-во вопросов из JSON
+fetch('questions.json?v=' + Date.now())
+  .then(r => r.json())
+  .then(data => {
+    const n = (data.questions || []).length;
+    document.getElementById('statTotal').textContent = n;
+  })
+  .catch(() => {});
+
+// ── ДЕТАЛЬНЫЙ ПРОСМОТР РЕЗУЛЬТАТА ──
+function showHistoryDetail(idx) {
+  const history = JSON.parse(localStorage.getItem('quiz_history') || '[]');
+  const h = history[idx];
+  if (!h) return;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m} мин ${String(sec).padStart(2,'0')} сек` : `${sec} сек`;
+  }
+
+  function getLabel(p) {
+    if (p >= 80) return 'Отличный результат!';
+    if (p >= 50) return 'Неплохо, есть куда расти';
+    return 'Стоит повторить материал';
+  }
+
+  function getEmoji(p) {
+    if (p >= 80) return '🎉';
+    if (p >= 50) return '💪';
+    return '📚';
+  }
+
+  const wrongCount = h.total - h.score;
+  const errors = h.errors || [];
+  const cls = h.percent >= 80 ? 'great' : h.percent >= 50 ? 'ok' : 'bad';
+  const colorVar = h.percent >= 80 ? 'success' : h.percent >= 50 ? 'warning' : 'danger';
+
+  let errorsHtml = '';
+  if (errors.length > 0) {
+    errorsHtml = `
+      <div class="errors-section">
+        <div class="errors-title">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+          Разбор ошибок <span style="color:var(--text-subtle);font-size:0.85rem;font-weight:400">(${errors.length})</span>
+        </div>
+        ${errors.map(e => `
+          <div class="error-card">
+            <div class="error-question">${e.text}</div>
+            <div class="error-answers">
+              ${!e.optOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Ваш</span>
+                  <span class="error-answer-text">${e.yourOption}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Верно</span>
+                  <span class="error-answer-text">${e.rightOption}</span>
+                </div>` : ''}
+              ${!e.typeOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Тип: ваш</span>
+                  <span class="error-answer-text">${e.yourType}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Тип: верно</span>
+                  <span class="error-answer-text">${e.rightType}</span>
+                </div>` : ''}
+            </div>
+            ${e.explanation ? `<div class="error-explanation">💡 ${e.explanation}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>`;
+  } else {
+    errorsHtml = `
+      <div style="text-align:center;padding:28px;background:var(--success-bg);border-radius:var(--radius-lg);border:1px solid var(--success)">
+        <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--success)">Все ответы верны!</div>
+        <div style="font-size:0.86rem;color:var(--text-muted);margin-top:4px">Превосходный результат</div>
+      </div>`;
+  }
+
+  document.getElementById('historyDetailBody').innerHTML = `
+    <div class="results-hero ${cls}" style="margin-bottom:20px">
+      <div style="font-size:2rem;margin-bottom:6px">${getEmoji(h.percent)}</div>
+      <div class="results-score-big">${h.score}<span> / ${h.total}</span></div>
+      <div class="results-percent" style="color:var(--${colorVar})">${h.percent}%</div>
+      <div class="results-label">${getLabel(h.percent)}</div>
+      <div class="results-meta">
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--success)">${h.score}</span>
+          <span class="results-meta-label">верных</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--danger)">${wrongCount}</span>
+          <span class="results-meta-label">ошибок</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num">${formatTime(h.time)}</span>
+          <span class="results-meta-label">времени</span>
+        </div>
+      </div>
+      ${h.expired ? `<div style="margin-top:8px;font-size:0.8rem;color:var(--danger);font-weight:600">⏰ Тест завершён по истечении времени</div>` : ''}
+    </div>
+    ${errorsHtml}
+  `;
+
+  new bootstrap.Modal(document.getElementById('historyDetailModal')).show();
+}
+
+// ── РЕНДЕР ИСТОРИИ ──
+(function renderHistory() {
+  const history = JSON.parse(localStorage.getItem('quiz_history') || '[]');
+  const container = document.getElementById('historyContainer');
+  const countEl   = document.getElementById('historyCount');
+  const attemptsEl = document.getElementById('statAttempts');
+  const bestEl     = document.getElementById('statBest');
+
+  attemptsEl.textContent = history.length || '—';
+
+  if (history.length > 0) {
+    const best = Math.max(...history.map(h => h.percent));
+    bestEl.textContent = best + '%';
+  }
+
+  if (countEl) countEl.textContent = history.length ? `${history.length} записей` : '';
+
+  if (history.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📄</div>
+        <div class="empty-state-title">Тестов пока нет</div>
+        <div class="empty-state-text">Пройдите первый тест — результаты сохранятся здесь</div>
+      </div>`;
+    return;
+  }
+
+  function getClass(pct) {
+    if (pct >= 80) return 'great';
+    if (pct >= 50) return 'ok';
+    return 'bad';
+  }
+
+  function getLabel(pct) {
+    if (pct >= 80) return ['badge-great', 'Отлично'];
+    if (pct >= 50) return ['badge-ok', 'Неплохо'];
+    return ['badge-bad', 'Слабо'];
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ru-RU', { day:'2-digit', month:'short', year:'numeric' }) +
+           ' · ' + d.toLocaleTimeString('ru-RU', { hour:'2-digit', minute:'2-digit' });
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m} мин ${String(sec).padStart(2,'0')} сек` : `${sec} сек`;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'history-grid';
+
+  history.forEach((h, i) => {
+    const cls = getClass(h.percent);
+    const [badgeCls, badgeText] = getLabel(h.percent);
+    grid.innerHTML += `
+      <div class="history-card result-${cls}" style="cursor:pointer" onclick="showHistoryDetail(${i})">
+        <div class="history-card-top">
+          <div class="history-score">
+            <span class="history-score-num">${h.score}</span>
+            <span class="history-score-total"> / ${h.total}</span>
+          </div>
+          <span class="history-badge ${badgeCls}">${badgeText}</span>
+        </div>
+        <div class="history-percent ${cls}">${h.percent}%</div>
+        <div class="history-meta">
+          <div class="history-meta-item">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"/><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/></svg>
+            ${formatTime(h.time)}
+          </div>
+          <div class="history-meta-item">
+            <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>
+            ${formatDate(h.date)}
+          </div>
+          ${h.expired ? `<div class="history-meta-item" style="color:var(--danger)">⏰ Время вышло</div>` : ''}
+        </div>
+        <div style="font-size:0.75rem;color:var(--accent);margin-top:8px;text-align:center;font-weight:500">Нажмите для деталей →</div>
+      </div>`;
+  });
+
+  container.appendChild(grid);
+})();
+</script>
+
+</body>
+</html>

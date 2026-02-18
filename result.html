@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результат теста — Бухгалтерский учёт</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function(){const t=localStorage.getItem('theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+  </script>
+</head>
+<body>
+
+<!-- ════════ NAVBAR ════════ -->
+<nav class="site-navbar navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon">БУ</span>
+      Бухгалтерский учёт
+    </a>
+    <div class="d-flex align-items-center gap-2 ms-auto">
+      <button class="theme-toggle" id="themeToggle" title="Переключить тему"></button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Меню">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <div class="navbar-nav ms-lg-3 w-100 d-lg-flex align-items-lg-center gap-lg-2">
+        <div class="nav-item">
+          <a href="#" class="nav-btn" target="_blank">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2M9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z"/></svg>
+            Лекции PDF
+          </a>
+        </div>
+        <div class="nav-item">
+          <button class="nav-btn nav-btn-accent" data-bs-toggle="modal" data-bs-target="#planModal">
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16"><path d="M0 2a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1v7.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 12.5V5a1 1 0 0 1-1-1zm2 3v7.5A1.5 1.5 0 0 0 3.5 14h9a1.5 1.5 0 0 0 1.5-1.5V5zm13-3H1v2h14z"/></svg>
+            План счётов
+          </button>
+        </div>
+        <div class="nav-item admin-nav-item" style="display:none">
+          <a href="admin.html" class="nav-btn nav-btn-admin">Админка</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- МОДАЛЬНОЕ — ПЛАН СЧЁТОВ -->
+<div class="modal fade" id="planModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Типовой план счетов РБ</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        <div class="plan-search">
+          <span class="si"><svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/></svg></span>
+          <input type="text" id="planSearch" placeholder="Поиск…">
+        </div>
+        <div class="plan-table-wrap">
+          <table class="plan-table">
+            <thead><tr><th style="width:80px">Счёт</th><th>Наименование</th><th>Субсчета</th></tr></thead>
+            <tbody id="planTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-outline" data-bs-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ РЕЗУЛЬТАТ ════════ -->
+<div class="container">
+  <div class="results-wrapper" id="resultsArea">
+    <div class="loading-screen"><div class="spinner"></div></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function () {
+  const raw = sessionStorage.getItem('last_result');
+  const area = document.getElementById('resultsArea');
+
+  if (!raw) {
+    area.innerHTML = `
+      <div style="text-align:center;padding:60px 0;color:var(--text-muted)">
+        <div style="font-size:2.5rem;margin-bottom:10px">📋</div>
+        <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:6px">Результат недоступен</div>
+        <div style="font-size:0.88rem;margin-bottom:20px">Пройдите тест, чтобы увидеть результаты</div>
+        <a href="index.html" class="btn-primary" style="display:inline-flex">← На главную</a>
+      </div>`;
+    return;
+  }
+
+  const data = JSON.parse(raw);
+  const { score, total, time, percent, errors } = data;
+
+  function getClass(p) {
+    if (p >= 80) return 'great';
+    if (p >= 50) return 'ok';
+    return 'bad';
+  }
+
+  function getEmoji(p) {
+    if (p >= 80) return '🎉';
+    if (p >= 50) return '💪';
+    return '📚';
+  }
+
+  function getLabel(p) {
+    if (p >= 80) return 'Отличный результат!';
+    if (p >= 50) return 'Неплохо, есть куда расти';
+    return 'Стоит повторить материал';
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m} мин ${String(sec).padStart(2,'0')} сек` : `${s} сек`;
+  }
+
+  const cls = getClass(percent);
+  const correctCount = score;
+  const wrongCount   = total - score;
+
+  let errorsHtml = '';
+  if (errors && errors.length > 0) {
+    errorsHtml = `
+      <div class="errors-section">
+        <div class="errors-title">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+          Разбор ошибок <span style="color:var(--text-subtle);font-size:0.85rem;font-weight:400">(${errors.length})</span>
+        </div>
+        ${errors.map(e => `
+          <div class="error-card">
+            <div class="error-question">${e.text}</div>
+            <div class="error-answers">
+              ${!e.optOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Ваш</span>
+                  <span class="error-answer-text">${e.yourOption}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Верно</span>
+                  <span class="error-answer-text">${e.rightOption}</span>
+                </div>` : ''}
+              ${!e.typeOk ? `
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-yours">Тип: ваш</span>
+                  <span class="error-answer-text">${e.yourType}</span>
+                </div>
+                <div class="error-answer-row">
+                  <span class="error-answer-tag tag-right">Тип: верно</span>
+                  <span class="error-answer-text">${e.rightType}</span>
+                </div>` : ''}
+            </div>
+            ${e.explanation ? `<div class="error-explanation">💡 ${e.explanation}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>`;
+  } else {
+    errorsHtml = `
+      <div style="text-align:center;padding:28px;background:var(--success-bg);border-radius:var(--radius-lg);border:1px solid var(--success)">
+        <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+        <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--success)">Все ответы верны!</div>
+        <div style="font-size:0.86rem;color:var(--text-muted);margin-top:4px">Превосходный результат</div>
+      </div>`;
+  }
+
+  area.innerHTML = `
+    <div class="results-hero ${cls}">
+      <div style="font-size:2.5rem;margin-bottom:8px">${getEmoji(percent)}</div>
+      <div class="results-score-big">${score}<span> / ${total}</span></div>
+      <div class="results-percent" style="color:var(--${cls === 'great' ? 'success' : cls === 'ok' ? 'warning' : 'danger'})">${percent}%</div>
+      <div class="results-label">${getLabel(percent)}</div>
+      <div class="results-meta">
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--success)">${correctCount}</span>
+          <span class="results-meta-label">верных</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num" style="color:var(--danger)">${wrongCount}</span>
+          <span class="results-meta-label">ошибок</span>
+        </div>
+        <div class="results-meta-item">
+          <span class="results-meta-num">${formatTime(time)}</span>
+          <span class="results-meta-label">времени</span>
+        </div>
+      </div>
+    </div>
+
+    ${errorsHtml}
+
+    <div class="results-buttons">
+      <a href="index.html" class="btn-outline">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        На главную
+      </a>
+      <a href="quiz.html" class="btn-primary">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+        Пройти ещё раз
+      </a>
+    </div>`;
+})();
+</script>
+
+</body>
+</html>
