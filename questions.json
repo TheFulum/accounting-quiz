@@ -75,7 +75,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -103,7 +103,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -131,7 +131,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -159,7 +159,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -184,7 +184,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "2",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -237,7 +237,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -265,7 +265,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -290,7 +290,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -318,7 +318,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -346,7 +346,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -374,7 +374,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -402,7 +402,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -430,7 +430,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -441,7 +441,7 @@
     },
     {
       "id": 17,
-      "text": "Получен краткосрочный кредит",
+      "text": "Зачислен краткосрочный кредит",
       "topic": "Кредиты",
       "options": [
         {
@@ -458,7 +458,7 @@
         }
       ],
       "correct": 3,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
