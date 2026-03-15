@@ -486,7 +486,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -514,7 +514,7 @@
         }
       ],
       "correct": 2,
-      "changeType": "4",
+      "changeType": "2",
       "changeTypeOptions": [
         "1",
         "2",
@@ -542,7 +542,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -567,7 +567,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -589,10 +589,13 @@
         },
         {
           "label": "Дт 50 — Кт 75"
+        },
+        {
+          "label": "Дт 51 - Кт 80"
         }
       ],
       "correct": 1,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
