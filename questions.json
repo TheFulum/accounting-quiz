@@ -623,7 +623,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -651,7 +651,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -679,7 +679,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -701,7 +701,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "4",
+      "changeType": "2",
       "changeTypeOptions": [
         "1",
         "2",
@@ -729,7 +729,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "2",
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
@@ -807,7 +807,7 @@
         }
       ],
       "correct": 2,
-      "changeType": "3",
+      "changeType": "1",
       "changeTypeOptions": [
         "1",
         "2",
@@ -818,7 +818,7 @@
     },
     {
       "id": 31,
-      "text": "Оплачено транспортной организации за доставку оборудования",
+      "text": "Перечислено транспортной организации за доставку оборудования",
       "topic": "Прочее",
       "options": [
         {
@@ -834,15 +834,15 @@
           "label": "Дт 60 — Кт 51"
         }
       ],
-      "correct": 3,
-      "changeType": "2",
+      "correct": 2,
+      "changeType": "4",
       "changeTypeOptions": [
         "1",
         "2",
         "3",
         "4"
       ],
-      "explanation": "Правильная бухгалтерская проводка: Дт 60 — Кт 51."
+      "explanation": "Правильная бухгалтерская проводка: Дт 76 — Кт 51."
     },
     {
       "id": 32,
