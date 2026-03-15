@@ -3178,7 +3178,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "4",
+      "changeType": "2",
       "changeTypeOptions": [
         "1",
         "2",
@@ -3203,7 +3203,7 @@
         }
       ],
       "correct": 0,
-      "changeType": "1",
+      "changeType": "3",
       "changeTypeOptions": [
         "1",
         "2",
@@ -3225,7 +3225,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "4",
+      "changeType": "2",
       "changeTypeOptions": [
         "1",
         "2",
@@ -3247,7 +3247,7 @@
         }
       ],
       "correct": 1,
-      "changeType": "4",
+      "changeType": "2",
       "changeTypeOptions": [
         "1",
         "2",
